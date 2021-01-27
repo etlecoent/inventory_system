@@ -14,10 +14,10 @@ const knex = require("knex")({
   client: "pg",
   version: "7.2",
   connection: {
-    host: "127.0.0.1",
-    user: "your_database_user",
-    password: "your_database_password",
-    database: "myapp_test",
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
   },
 });
 
