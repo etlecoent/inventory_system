@@ -1,6 +1,6 @@
 exports.up = function (knex) {
   return knex.schema.createTable("stored_books", (table) => {
-    table.increments("id");
+    table.increments("id").unsigned().primary();
     table.integer("book_id").unsigned().notNullable();
     table.integer("bookstore_id").unsigned().notNullable();
     table.integer("quantity").defaultTo(0);
