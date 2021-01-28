@@ -7,7 +7,16 @@ module.exports = (db) => {
       .catch((err) => console.log(err));
   };
 
+  const getBooks = () => {
+    return db
+      .select("*")
+      .from("books")
+      .then((result) => result)
+      .catch((err) => console.log(err));
+  };
+
   return {
     getUsers,
+    getBooks,
   };
 };
