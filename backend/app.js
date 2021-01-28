@@ -28,3 +28,5 @@ const usersRouter = require("./routes/users");
 app.use("/users", usersRouter(dbHelpers));
 const booksRouter = require("./routes/books");
 app.use("/books", booksRouter(dbHelpers));
+const bookstoresRouter = require("./routes/bookstores");
+app.use("/bookstores", bookstoresRouter(dbHelpers));
