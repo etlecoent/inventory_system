@@ -23,19 +23,19 @@ module.exports = ({
       .catch((err) => res.send(err));
   });
 
-  router.get("/:bookstore_id/books", (req, res) => {
-    getBooksForBookstoreById(req.params.bookstore_id)
-      .then((books) => {
-        res.json(books);
-      })
-      .catch((err) => res.send(err));
-  });
-
   router.post("/:bookstore_id/books/", (req, res) => {
     const { book_id, quantity } = req.body;
     addBookToBookstoreById(book_id, req.params.bookstore_id, quantity)
       .then((result) => {
         res.json(result);
+      })
+      .catch((err) => res.send(err));
+  });
+
+  router.get("/:bookstore_id/books", (req, res) => {
+    getBooksForBookstoreById(req.params.bookstore_id)
+      .then((books) => {
+        res.json(books);
       })
       .catch((err) => res.send(err));
   });
