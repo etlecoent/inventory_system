@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development nodemon --legacy-watch",
     "db:migrate": "knex --knexfile db/knexfile.js migrate:latest",
-    "db:rollback": "knex --knexfile db/knexfile.js migrate:rollback"
+    "db:rollback": "knex --knexfile db/knexfile.js migrate:rollback",
+    "db:seed": "knex --knexfile db/knexfile.js seed:run"
   },
   "author": "",
   "license": "ISC",
