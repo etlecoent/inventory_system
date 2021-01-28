@@ -36,13 +36,5 @@ module.exports = ({
     // Create stored_book table
   });
 
-  router.get("/:bookstore_id/books/:book_id", (req, res) => {
-    getBookByIdForBookstoreById(req.params.bookstore_id, req.params.book_id)
-      .then((book) => {
-        res.json(book);
-      })
-      .catch((err) => res.send(err));
-  });
-
   return router;
 };
