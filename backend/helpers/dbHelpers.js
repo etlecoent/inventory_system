@@ -4,7 +4,10 @@ module.exports = (db) => {
       .select("*")
       .from("users")
       .then((result) => result)
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
   };
 
   const getBooks = () => {
@@ -12,7 +15,10 @@ module.exports = (db) => {
       .select("*")
       .from("books")
       .then((result) => result)
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
   };
 
   const getBookstores = () => {
@@ -20,7 +26,10 @@ module.exports = (db) => {
       .select("*")
       .from("bookstores")
       .then((result) => result)
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
   };
 
   const getBookstoreById = (id) => {
@@ -29,7 +38,10 @@ module.exports = (db) => {
       .from("bookstores")
       .where("id", id)
       .then((result) => result[0])
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
   };
 
   const addBookToBookstoreById = (book_id, bookstore_id, quantity) => {
@@ -40,7 +52,7 @@ module.exports = (db) => {
         quantity,
       })
       .returning("*")
-      .then((result) => result)
+      .then((result) => result[0])
       .catch((err) => {
         console.log(err);
         throw err;
@@ -54,7 +66,10 @@ module.exports = (db) => {
       .innerJoin("stored_books", "books.id", "stored_books.book_id")
       .where("bookstore_id", id)
       .then((result) => result)
-      .catch((err) => err);
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
   };
 
   return {
