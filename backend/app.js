@@ -13,8 +13,8 @@ if (process.env.NODE_ENV !== "production") {
 
 // Database setup
 const knexfile = require("./db/knexfile");
-const knex = require("knex")(knexfile[process.env.NODE_ENV]);
-// const dbHelpers = require("./helpers/dbHelpers")(db);
+const db = require("knex")(knexfile[process.env.NODE_ENV]);
+const dbHelpers = require("./helpers/dbHelpers")(db);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
@@ -24,3 +24,5 @@ app.listen(port, () => {
 // Routes setup
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
+const usersRouter = require("./routes/users");
+app.use("/users", usersRouter(dbHelpers));
