@@ -5,7 +5,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Database setup
-const db = require("./db/knexfile");
+const knexfile = require("./db/knexfile");
+const knex = require("knex")(knexfile);
 // const dbHelpers = require("./helpers/dbHelpers")(db);
 
 // Environment setup
