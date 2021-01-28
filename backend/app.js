@@ -4,17 +4,17 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Database setup
-const knexfile = require("./db/knexfile");
-const knex = require("knex")(knexfile);
-// const dbHelpers = require("./helpers/dbHelpers")(db);
-
 // Environment setup
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
   const logger = require("morgan");
   app.use(logger("dev"));
 }
+
+// Database setup
+const knexfile = require("./db/knexfile");
+const knex = require("knex")(knexfile[process.env.NODE_ENV]);
+// const dbHelpers = require("./helpers/dbHelpers")(db);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
