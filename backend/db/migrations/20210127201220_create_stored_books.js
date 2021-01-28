@@ -9,6 +9,7 @@ exports.up = function (knex) {
 
     table.foreign("book_id").references("id").inTable("books");
     table.foreign("bookstore_id").references("id").inTable("bookstores");
+    table.unique(["book_id", "bookstore_id"]);
   });
 };
 
