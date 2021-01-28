@@ -32,6 +32,21 @@ module.exports = (db) => {
       .catch((err) => console.log(err));
   };
 
+  const addBookToBookstoreById = (book_id, bookstore_id, quantity) => {
+    return db("stored_books")
+      .insert({
+        book_id,
+        bookstore_id,
+        quantity,
+      })
+      .returning("*")
+      .then((result) => result)
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  };
+
   const getBooksForBookstoreById = (id) => {
     return db
       .select("*")
@@ -39,7 +54,7 @@ module.exports = (db) => {
       .innerJoin("stored_books", "books.id", "stored_books.book_id")
       .where("bookstore_id", id)
       .then((result) => result)
-      .catch((err) => console.log(err));
+      .catch((err) => err);
   };
 
   return {
@@ -47,7 +62,7 @@ module.exports = (db) => {
     getBooks,
     getBookstores,
     getBookstoreById,
+    addBookToBookstoreById,
     getBooksForBookstoreById,
-    getBookByIdForBookstoreById,
   };
 };
