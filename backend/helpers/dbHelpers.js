@@ -15,8 +15,17 @@ module.exports = (db) => {
       .catch((err) => console.log(err));
   };
 
+  const getBookstores = () => {
+    return db
+      .select("*")
+      .from("bookstores")
+      .then((result) => result)
+      .catch((err) => console.log(err));
+  };
+
   return {
     getUsers,
     getBooks,
+    getBookstores,
   };
 };
