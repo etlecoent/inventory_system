@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --legacy-watch",
+    "dev": "NODE_ENV=development nodemon --legacy-watch",
     "db:migrate": "knex --knexfile db/knexfile.js migrate:latest",
     "db:rollback": "knex --knexfile db/knexfile.js migrate:rollback"
   },
