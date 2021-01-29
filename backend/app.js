@@ -14,19 +14,31 @@ if (process.env.NODE_ENV !== "production") {
 // Database setup
 const knexfile = require("./db/knexfile");
 const db = require("knex")(knexfile[process.env.NODE_ENV]);
-const dbHelpers = require("./helpers/dbHelpers")(db);
 
-const port = process.env.PORT || 3001;
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+// Helpers
+const dbHelpers = require("./helpers/dbHelpers")(db);
+const errorsHelper = require("./helpers/errorsHelper");
 
 // Routes setup
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 const usersRouter = require("./routes/users");
-app.use("/users", usersRouter(dbHelpers));
+app.use("/users", usersRouter(errorsHelper, dbHelpers));
 const booksRouter = require("./routes/books");
-app.use("/books", booksRouter(dbHelpers));
+app.use("/books", booksRouter(errorsHelper, dbHelpers));
 const bookstoresRouter = require("./routes/bookstores");
-app.use("/bookstores", bookstoresRouter(dbHelpers));
+app.use("/bookstores", bookstoresRouter(errorsHelper, dbHelpers));
+
+// Error middleware
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    status: err.status,
+    message: err.message,
+  });
+});
+
+const port = process.env.PORT || 3001;
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
