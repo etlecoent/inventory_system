@@ -59,6 +59,25 @@ module.exports = (db) => {
       });
   };
 
+  const updateStoredBookByIdForBookstoreById = (
+    book_id,
+    bookstore_id,
+    quantity
+  ) => {
+    return db("stored_books")
+      .where({
+        book_id,
+        bookstore_id,
+      })
+      .update({ quantity })
+      .returning("*")
+      .then((result) => result[0])
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  };
+
   const getBooksForBookstoreById = (id) => {
     return db
       .select("*")
@@ -78,6 +97,7 @@ module.exports = (db) => {
     getBookstores,
     getBookstoreById,
     addBookToBookstoreById,
+    updateStoredBookByIdForBookstoreById,
     getBooksForBookstoreById,
   };
 };

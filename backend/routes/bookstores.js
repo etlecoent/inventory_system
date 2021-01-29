@@ -6,6 +6,7 @@ module.exports = ({
   getBookstoreById,
   addBookToBookstoreById,
   getBooksForBookstoreById,
+  updateStoredBookByIdForBookstoreById,
 }) => {
   router.get("/", (req, res) => {
     getBookstores()
@@ -36,6 +37,20 @@ module.exports = ({
     getBooksForBookstoreById(req.params.bookstore_id)
       .then((books) => {
         res.json(books);
+      })
+      .catch((err) => res.send(err));
+  });
+
+  router.put("/:bookstore_id/books/:book_id", (req, res) => {
+    const { book_id, bookstore_id } = req.params;
+    const { quantity } = req.body;
+    updateStoredBookByIdForBookstoreById(book_id, bookstore_id, quantity)
+      .then((updatedStoredBook) => {
+        if (updatedStoredBook) {
+          res.json(updatedStoredBook);
+        } else {
+          res.status(501).json({ message: "Not found" });
+        }
       })
       .catch((err) => res.send(err));
   });
