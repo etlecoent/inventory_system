@@ -3,6 +3,7 @@ module.exports = (db) => {
     return db
       .select("*")
       .from("users")
+      .orderBy("id")
       .then((result) => result)
       .catch((err) => {
         console.log(err);
@@ -14,6 +15,7 @@ module.exports = (db) => {
     return db
       .select("*")
       .from("books")
+      .orderBy("id")
       .then((result) => result)
       .catch((err) => {
         console.log(err);
@@ -25,6 +27,7 @@ module.exports = (db) => {
     return db
       .select("*")
       .from("bookstores")
+      .orderBy("id")
       .then((result) => result)
       .catch((err) => {
         console.log(err);
@@ -92,10 +95,19 @@ module.exports = (db) => {
 
   const getBooksForBookstoreById = (id) => {
     return db
-      .select("*")
+      .select([
+        "books.id",
+        "books.title",
+        "books.author",
+        "books.summary",
+        "stored_books.quantity",
+        "stored_books.created_at",
+        "stored_books.updated_at",
+      ])
       .from("books")
       .innerJoin("stored_books", "books.id", "stored_books.book_id")
       .where("bookstore_id", id)
+      .orderBy("id")
       .then((result) => result)
       .catch((err) => {
         console.log(err);
