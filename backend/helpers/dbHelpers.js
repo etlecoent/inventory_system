@@ -37,7 +37,7 @@ module.exports = (db) => {
       .select("*")
       .from("bookstores")
       .where("id", id)
-      .then((result) => result[0])
+      .then((result) => result)
       .catch((err) => {
         console.log(err);
         throw err;
@@ -52,7 +52,7 @@ module.exports = (db) => {
         quantity,
       })
       .returning("*")
-      .then((result) => result[0])
+      .then((result) => result)
       .catch((err) => {
         console.log(err);
         throw err;
@@ -71,7 +71,7 @@ module.exports = (db) => {
       })
       .update({ quantity })
       .returning("*")
-      .then((result) => result[0])
+      .then((result) => result)
       .catch((err) => {
         console.log(err);
         throw err;

@@ -11,7 +11,11 @@ module.exports = ({
   router.get("/", (req, res) => {
     getBookstores()
       .then((bookstores) => {
-        res.json(bookstores);
+        if (bookstores.length) {
+          res.json(bookstores);
+        } else {
+          res.status(501).json({ message: "Not found" });
+        }
       })
       .catch((err) => res.send(err));
   });
@@ -19,7 +23,11 @@ module.exports = ({
   router.get("/:bookstore_id", (req, res) => {
     getBookstoreById(req.params.bookstore_id)
       .then((bookstore) => {
-        res.json(bookstore);
+        if (bookstore.length) {
+          res.json(bookstore[0]);
+        } else {
+          res.status(501).json({ message: "Not found" });
+        }
       })
       .catch((err) => res.send(err));
   });
@@ -27,8 +35,12 @@ module.exports = ({
   router.post("/:bookstore_id/books/", (req, res) => {
     const { book_id, quantity } = req.body;
     addBookToBookstoreById(book_id, req.params.bookstore_id, quantity)
-      .then((result) => {
-        res.json(result);
+      .then((book) => {
+        if (book.length) {
+          res.json(book[0]);
+        } else {
+          res.status(501).json({ message: "Not found" });
+        }
       })
       .catch((err) => res.send(err));
   });
@@ -46,8 +58,8 @@ module.exports = ({
     const { quantity } = req.body;
     updateStoredBookByIdForBookstoreById(book_id, bookstore_id, quantity)
       .then((updatedStoredBook) => {
-        if (updatedStoredBook) {
-          res.json(updatedStoredBook);
+        if (updatedStoredBook.length) {
+          res.json(updatedStoredBook[0]);
         } else {
           res.status(501).json({ message: "Not found" });
         }
