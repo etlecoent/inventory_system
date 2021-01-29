@@ -16,7 +16,6 @@ const knexfile = require("./db/knexfile");
 const db = require("knex")(knexfile[process.env.NODE_ENV]);
 
 // Helpers
-const dbHelpers = require("./helpers/dbHelpers")(db);
 const errorsHelper = require("./helpers/errorsHelper");
 
 // Routes setup
@@ -25,15 +24,15 @@ app.use("/", indexRouter);
 
 const usersRouter = require("./routes/usersRoute");
 const usersController = require("./controllers/usersController")(db);
-app.use("/users", usersRouter(booksController));
+app.use("/users", usersRouter(usersController));
 
 const bookstoresRouter = require("./routes/bookstoresRoute");
 const bookstoresController = require("./controllers/bookstoresController")(db);
-app.use("/bookstores", bookstoresRouter(usersController));
+app.use("/bookstores", bookstoresRouter(bookstoresController));
 
 const booksRouter = require("./routes/books");
 const booksController = require("./controllers/booksController")(db);
-app.use("/books", booksRouter(bookstoresController));
+app.use("/books", booksRouter(booksController));
 
 // Error middleware
 app.use((err, req, res, next) => {
