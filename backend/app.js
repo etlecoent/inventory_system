@@ -31,13 +31,14 @@ app.use("/bookstores", bookstoresRouter(errorsHelper, dbHelpers));
 
 // Error middleware
 app.use((err, req, res, next) => {
-  console.log("Error status: ", err.status);
-  console.log("Message: ", err.message);
+  const { statusCode, message } = err;
+  console.log("Error status: ", statusCode);
+  console.log("Message: ", message);
 
-  res.status(err.status || 500);
+  res.status(statusCode || 500);
   res.json({
-    status: err.status,
-    message: err.message,
+    statusCode,
+    message,
   });
 });
 
