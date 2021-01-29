@@ -112,11 +112,14 @@ module.exports = (db) => {
     quantity
   ) => {
     return db("stored_books")
-      .where({
-        book_id,
-        bookstore_id,
+      .where({ book_id, bookstore_id })
+      .modify((queryBuilder) => {
+        if (quantity < 0) {
+          queryBuilder.andWhere("quantity", ">=", Math.abs(quantity));
+        }
       })
-      .update({ quantity, updated_at: new Date().toISOString() })
+      .increment("quantity", quantity)
+      .update({ updated_at: new Date().toISOString() })
       .returning("*")
       .then((result) => result)
       .catch((err) => {
