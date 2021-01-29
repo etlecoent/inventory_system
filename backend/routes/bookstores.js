@@ -5,6 +5,7 @@ module.exports = ({
   getBookstores,
   getBookstoreById,
   addBookToBookstoreById,
+  getBookByIdForBookstoreById,
   updateStoredBookByIdForBookstoreById,
   deleteStoredBookByIdForBookstoreById,
   getBooksForBookstoreById,
@@ -27,8 +28,16 @@ module.exports = ({
         if (bookstore.length) {
           res.json(bookstore[0]);
         } else {
-          res.status(501).json({ message: "Not found" });
+          res.status(404).json({ message: "Not found" });
         }
+      })
+      .catch((err) => res.send(err));
+  });
+
+  router.get("/:bookstore_id/books", (req, res) => {
+    getBooksForBookstoreById(req.params.bookstore_id)
+      .then((books) => {
+        res.json(books);
       })
       .catch((err) => res.send(err));
   });
@@ -46,10 +55,15 @@ module.exports = ({
       .catch((err) => res.send(err));
   });
 
-  router.get("/:bookstore_id/books", (req, res) => {
-    getBooksForBookstoreById(req.params.bookstore_id)
-      .then((books) => {
-        res.json(books);
+  router.get("/:bookstore_id/books/:book_id", (req, res) => {
+    const { bookstore_id, book_id } = req.params;
+    getBookByIdForBookstoreById(book_id, bookstore_id)
+      .then((book) => {
+        if (book.length) {
+          res.json(book[0]);
+        } else {
+          res.status(404).json({ message: "Not found" });
+        }
       })
       .catch((err) => res.send(err));
   });

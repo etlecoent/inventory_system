@@ -62,6 +62,50 @@ module.exports = (db) => {
       });
   };
 
+  const getBookByIdForBookstoreById = (book_id, bookstore_id) => {
+    return db
+      .select([
+        "books.id",
+        "books.title",
+        "books.author",
+        "books.summary",
+        "stored_books.quantity",
+        "stored_books.created_at",
+        "stored_books.updated_at",
+      ])
+      .from("books")
+      .innerJoin("stored_books", "books.id", "stored_books.book_id")
+      .where({ book_id, bookstore_id })
+      .orderBy("id")
+      .then((result) => result)
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  };
+
+  const getBooksForBookstoreById = (id) => {
+    return db
+      .select([
+        "books.id",
+        "books.title",
+        "books.author",
+        "books.summary",
+        "stored_books.quantity",
+        "stored_books.created_at",
+        "stored_books.updated_at",
+      ])
+      .from("books")
+      .innerJoin("stored_books", "books.id", "stored_books.book_id")
+      .where("bookstore_id", id)
+      .orderBy("id")
+      .then((result) => result)
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  };
+
   const updateStoredBookByIdForBookstoreById = (
     book_id,
     bookstore_id,
@@ -93,36 +137,15 @@ module.exports = (db) => {
       });
   };
 
-  const getBooksForBookstoreById = (id) => {
-    return db
-      .select([
-        "books.id",
-        "books.title",
-        "books.author",
-        "books.summary",
-        "stored_books.quantity",
-        "stored_books.created_at",
-        "stored_books.updated_at",
-      ])
-      .from("books")
-      .innerJoin("stored_books", "books.id", "stored_books.book_id")
-      .where("bookstore_id", id)
-      .orderBy("id")
-      .then((result) => result)
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
-  };
-
   return {
     getUsers,
     getBooks,
     getBookstores,
     getBookstoreById,
+    getBooksForBookstoreById,
     addBookToBookstoreById,
+    getBookByIdForBookstoreById,
     updateStoredBookByIdForBookstoreById,
     deleteStoredBookByIdForBookstoreById,
-    getBooksForBookstoreById,
   };
 };
