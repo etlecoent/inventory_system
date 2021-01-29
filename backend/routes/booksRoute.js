@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-module.exports = ({ ErrorHandler }, { getBooks }) => {
+module.exports = ({ getBooks }) => {
   router.get("/", (req, res) => {
     getBooks().then((books) => res.json(books));
   });

@@ -1,18 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const { ErrorHandler } = require("../helpers/errorsHelper");
+const {} = require("../controllers/bookstoresController");
 
-module.exports = (
-  { ErrorHandler },
-  {
-    getBookstores,
-    getBookstoreById,
-    addBookToBookstoreById,
-    getBookByIdForBookstoreById,
-    updateStoredBookByIdForBookstoreById,
-    deleteStoredBookByIdForBookstoreById,
-    getBooksForBookstoreById,
-  }
-) => {
+module.exports = ({
+  getBookstores,
+  getBookstoreById,
+  addBookToBookstoreById,
+  getBookByIdForBookstoreById,
+  updateStoredBookByIdForBookstoreById,
+  deleteStoredBookByIdForBookstoreById,
+  getBooksForBookstoreById,
+}) => {
   router.get("/", (req, res) => {
     getBookstores()
       .then((bookstores) => {
