@@ -58,18 +58,24 @@ module.exports = (
   });
 
   router.post("/:bookstore_id/books/", (req, res) => {
+    const { bookstore_id } = req.params;
     const { book_id, quantity } = req.body;
-    addBookToBookstoreById(book_id, req.params.bookstore_id, quantity)
-      .then((book) => {
-        if (book.length) {
-          res.json(book[0]);
-        } else {
-          res.status(501).json({ message: "Not found" });
-        }
-      })
-      .catch((err) => {
-        throw err;
-      });
+
+    if (!book_id || !quantity) {
+      throw new ErrorHandler(400, "Missing field");
+    } else {
+      addBookToBookstoreById(book_id, bookstore_id, quantity)
+        .then((book) => {
+          if (book.length) {
+            res.json(book[0]);
+          } else {
+            throw new ErrorHandler(400, "Missing field");
+          }
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
   });
 
   router.get("/:bookstore_id/books/:book_id", (req, res) => {
