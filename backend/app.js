@@ -31,6 +31,9 @@ app.use("/bookstores", bookstoresRouter(errorsHelper, dbHelpers));
 
 // Error middleware
 app.use((err, req, res, next) => {
+  console.log("Error status: ", err.status);
+  console.log("Message: ", err.message);
+
   res.status(err.status || 500);
   res.json({
     status: err.status,
