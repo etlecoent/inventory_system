@@ -72,7 +72,7 @@ module.exports = (db) => {
         book_id,
         bookstore_id,
       })
-      .update({ quantity })
+      .update({ quantity, updated_at: new Date().toISOString() })
       .returning("*")
       .then((result) => result)
       .catch((err) => {
