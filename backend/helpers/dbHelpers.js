@@ -78,6 +78,18 @@ module.exports = (db) => {
       });
   };
 
+  const deleteStoredBookByIdForBookstoreById = (book_id, bookstore_id) => {
+    return db("stored_books")
+      .where({ book_id, bookstore_id })
+      .del()
+      .returning("*")
+      .then((result) => result)
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  };
+
   const getBooksForBookstoreById = (id) => {
     return db
       .select("*")
@@ -98,6 +110,7 @@ module.exports = (db) => {
     getBookstoreById,
     addBookToBookstoreById,
     updateStoredBookByIdForBookstoreById,
+    deleteStoredBookByIdForBookstoreById,
     getBooksForBookstoreById,
   };
 };

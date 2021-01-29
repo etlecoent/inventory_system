@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 module.exports = ({
-  getBookstores,
   getBookstoreById,
   addBookToBookstoreById,
-  getBooksForBookstoreById,
   updateStoredBookByIdForBookstoreById,
+  deleteStoredBookByIdForBookstoreById,
+  getBooksForBookstoreById,
 }) => {
   router.get("/", (req, res) => {
     getBookstores()
@@ -57,6 +57,19 @@ module.exports = ({
     const { book_id, bookstore_id } = req.params;
     const { quantity } = req.body;
     updateStoredBookByIdForBookstoreById(book_id, bookstore_id, quantity)
+      .then((updatedStoredBook) => {
+        if (updatedStoredBook.length) {
+          res.json(updatedStoredBook[0]);
+        } else {
+          res.status(501).json({ message: "Not found" });
+        }
+      })
+      .catch((err) => res.send(err));
+  });
+
+  router.delete("/:bookstore_id/books/:book_id", (req, res) => {
+    const { book_id, bookstore_id } = req.params;
+    deleteStoredBookByIdForBookstoreById(book_id, bookstore_id)
       .then((updatedStoredBook) => {
         if (updatedStoredBook.length) {
           res.json(updatedStoredBook[0]);
