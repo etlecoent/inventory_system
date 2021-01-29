@@ -30,7 +30,7 @@ const bookstoresRouter = require("./routes/bookstoresRoute");
 const bookstoresController = require("./controllers/bookstoresController")(db);
 app.use("/bookstores", bookstoresRouter(bookstoresController));
 
-const booksRouter = require("./routes/books");
+const booksRouter = require("./routes/booksRoute");
 const booksController = require("./controllers/booksController")(db);
 app.use("/books", booksRouter(booksController));
 
