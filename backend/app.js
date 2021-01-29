@@ -22,12 +22,18 @@ const errorsHelper = require("./helpers/errorsHelper");
 // Routes setup
 const indexRouter = require("./routes/indexRoute");
 app.use("/", indexRouter);
+
 const usersRouter = require("./routes/usersRoute");
-app.use("/users", usersRouter(errorsHelper, dbHelpers));
-const booksRouter = require("./routes/books");
-app.use("/books", booksRouter(errorsHelper, dbHelpers));
+const usersController = require("./controllers/usersController")(db);
+app.use("/users", usersRouter(booksController));
+
 const bookstoresRouter = require("./routes/bookstoresRoute");
-app.use("/bookstores", bookstoresRouter(errorsHelper, dbHelpers));
+const bookstoresController = require("./controllers/bookstoresController")(db);
+app.use("/bookstores", bookstoresRouter(usersController));
+
+const booksRouter = require("./routes/books");
+const booksController = require("./controllers/booksController")(db);
+app.use("/books", booksRouter(bookstoresController));
 
 // Error middleware
 app.use((err, req, res, next) => {
