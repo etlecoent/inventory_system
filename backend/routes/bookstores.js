@@ -1,45 +1,60 @@
 const express = require("express");
 const router = express.Router();
 
-module.exports = ({
-  getBookstores,
-  getBookstoreById,
-  addBookToBookstoreById,
-  getBookByIdForBookstoreById,
-  updateStoredBookByIdForBookstoreById,
-  deleteStoredBookByIdForBookstoreById,
-  getBooksForBookstoreById,
-}) => {
+module.exports = (
+  { ErrorHandler },
+  {
+    getBookstores,
+    getBookstoreById,
+    addBookToBookstoreById,
+    getBookByIdForBookstoreById,
+    updateStoredBookByIdForBookstoreById,
+    deleteStoredBookByIdForBookstoreById,
+    getBooksForBookstoreById,
+  }
+) => {
   router.get("/", (req, res) => {
     getBookstores()
       .then((bookstores) => {
         if (bookstores.length) {
           res.json(bookstores);
         } else {
-          res.status(501).json({ message: "Not found" });
+          throw new ErrorHandler(404, "Not found");
         }
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        throw err;
+      });
   });
 
   router.get("/:bookstore_id", (req, res) => {
-    getBookstoreById(req.params.bookstore_id)
+    const { bookstore_id } = req.params;
+    getBookstoreById(bookstore_id)
       .then((bookstore) => {
         if (bookstore.length) {
           res.json(bookstore[0]);
         } else {
-          res.status(404).json({ message: "Not found" });
+          throw new ErrorHandler(
+            400,
+            `Bookstore with id ${bookstore_id} doesn't exist`
+          );
         }
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        throw err;
+      });
   });
 
   router.get("/:bookstore_id/books", (req, res) => {
-    getBooksForBookstoreById(req.params.bookstore_id)
+    const { bookstore_id } = req.params;
+
+    getBooksForBookstoreById(bookstore_id)
       .then((books) => {
         res.json(books);
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        throw err;
+      });
   });
 
   router.post("/:bookstore_id/books/", (req, res) => {
@@ -52,7 +67,9 @@ module.exports = ({
           res.status(501).json({ message: "Not found" });
         }
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        throw err;
+      });
   });
 
   router.get("/:bookstore_id/books/:book_id", (req, res) => {
@@ -65,7 +82,9 @@ module.exports = ({
           res.status(404).json({ message: "Not found" });
         }
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        throw err;
+      });
   });
 
   router.put("/:bookstore_id/books/:book_id", (req, res) => {
@@ -79,7 +98,9 @@ module.exports = ({
           res.status(501).json({ message: "Not found" });
         }
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        throw err;
+      });
   });
 
   router.delete("/:bookstore_id/books/:book_id", (req, res) => {
@@ -92,7 +113,9 @@ module.exports = ({
           res.status(501).json({ message: "Not found" });
         }
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        throw err;
+      });
   });
 
   return router;
