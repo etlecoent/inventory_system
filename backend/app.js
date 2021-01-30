@@ -34,6 +34,12 @@ const booksRouter = require("./routes/booksRoute");
 const booksController = require("./controllers/booksController")(db);
 app.use("/books", booksRouter(booksController));
 
+const bookstoresBooksRouter = require("./routes/bookstoresBooksRoute");
+const bookstoresBooksController = require("./controllers/bookstoresBooksController")(
+  db
+);
+app.use("/bookstores-books", bookstoresBooksRouter(bookstoresBooksController));
+
 // Error middleware
 app.use((err, req, res, next) => {
   const { statusCode, message } = err;
