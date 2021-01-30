@@ -69,7 +69,11 @@ module.exports = ({
     const { books_id } = req.params;
     getBookstoresForBookById(books_id)
       .then((result) => {
-        res.json(result);
+        if (result.length) {
+          res.json(result);
+        } else {
+          throw new ErrorHandler(404, "Not found");
+        }
       })
       .catch((err) => next(err));
   });
