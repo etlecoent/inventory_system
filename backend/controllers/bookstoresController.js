@@ -4,11 +4,7 @@ module.exports = (db) => {
       .select("*")
       .from("bookstores")
       .orderBy("id")
-      .then((result) => result)
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
+      .then((result) => result);
   };
 
   const getBookstoreById = (id) => {
@@ -16,11 +12,7 @@ module.exports = (db) => {
       .select("*")
       .from("bookstores")
       .where("id", id)
-      .then((result) => result)
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
+      .then((result) => result);
   };
 
   const getBooksForBookstoreById = (id) => {
@@ -38,11 +30,7 @@ module.exports = (db) => {
       .innerJoin("stored_books", "books.id", "stored_books.book_id")
       .where("bookstore_id", id)
       .orderBy("id")
-      .then((result) => result)
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
+      .then((result) => result);
   };
 
   const addBookToBookstoreById = (book_id, bookstore_id, quantity) => {
@@ -53,11 +41,7 @@ module.exports = (db) => {
         quantity,
       })
       .returning("*")
-      .then((result) => result)
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
+      .then((result) => result);
   };
 
   const getBookByIdForBookstoreById = (book_id, bookstore_id) => {
@@ -75,11 +59,7 @@ module.exports = (db) => {
       .innerJoin("stored_books", "books.id", "stored_books.book_id")
       .where({ book_id, bookstore_id })
       .orderBy("id")
-      .then((result) => result)
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
+      .then((result) => result);
   };
 
   const updateStoredBookByIdForBookstoreById = (
@@ -97,11 +77,7 @@ module.exports = (db) => {
       .increment("quantity", quantity)
       .update({ updated_at: new Date().toISOString() })
       .returning("*")
-      .then((result) => result)
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
+      .then((result) => result);
   };
 
   const deleteStoredBookByIdForBookstoreById = (book_id, bookstore_id) => {
@@ -109,11 +85,7 @@ module.exports = (db) => {
       .where({ book_id, bookstore_id })
       .del()
       .returning("*")
-      .then((result) => result)
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
+      .then((result) => result);
   };
 
   return {
