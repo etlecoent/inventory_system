@@ -62,24 +62,6 @@ module.exports = (db) => {
       .then((result) => result);
   };
 
-  const updateStoredBookByIdForBookstoreById = (
-    book_id,
-    bookstore_id,
-    quantity
-  ) => {
-    return db("stored_books")
-      .where({ book_id, bookstore_id })
-      .modify((queryBuilder) => {
-        if (quantity < 0) {
-          queryBuilder.andWhere("quantity", ">=", Math.abs(quantity));
-        }
-      })
-      .increment("quantity", quantity)
-      .update({ updated_at: new Date().toISOString() })
-      .returning("*")
-      .then((result) => result);
-  };
-
   const deleteStoredBookByIdForBookstoreById = (book_id, bookstore_id) => {
     return db("stored_books")
       .where({ book_id, bookstore_id })
@@ -94,7 +76,6 @@ module.exports = (db) => {
     getBooksForBookstoreById,
     addBookToBookstoreById,
     getBookByIdForBookstoreById,
-    updateStoredBookByIdForBookstoreById,
     deleteStoredBookByIdForBookstoreById,
   };
 };
