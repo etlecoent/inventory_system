@@ -62,20 +62,11 @@ module.exports = (db) => {
       .then((result) => result);
   };
 
-  const deleteStoredBookByIdForBookstoreById = (book_id, bookstore_id) => {
-    return db("stored_books")
-      .where({ book_id, bookstore_id })
-      .del()
-      .returning("*")
-      .then((result) => result);
-  };
-
   return {
     getBookstores,
     getBookstoreById,
     getBooksForBookstoreById,
     addBookToBookstoreById,
     getBookByIdForBookstoreById,
-    deleteStoredBookByIdForBookstoreById,
   };
 };

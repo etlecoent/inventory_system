@@ -6,6 +6,7 @@ module.exports = ({
   getBookstoresBooks,
   getBookstoresBooksById,
   updateBookstoresBooks,
+  deleteBookstoresBooksById,
 }) => {
   router.get("/", (req, res, next) => {
     getBookstoresBooks()
@@ -39,14 +40,25 @@ module.exports = ({
           if (result.length) {
             res.json(result[0]);
           } else {
-            res.status(501).json({ message: "Not found" });
+            throw new ErrorHandler(404, "Not found");
           }
         })
         .catch((err) => next(err));
     }
   });
 
-  router.delete("/", (req, res, next) => {});
+  router.delete("/:id", (req, res, next) => {
+    const { id } = req.params;
+    deleteBookstoresBooksById(id)
+      .then((result) => {
+        if (result.length) {
+          res.json(result[0]);
+        } else {
+          throw new ErrorHandler(404, "Not found");
+        }
+      })
+      .catch((err) => next(err));
+  });
 
   return router;
 };
