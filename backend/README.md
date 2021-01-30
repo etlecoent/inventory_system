@@ -22,12 +22,12 @@ GET/PATCH(quantity)/DELETE /bookstores-books/:id
 
 ## Bookstores
 
-GET /bookstores
+GET/POST(name) /bookstores
 GET/DELETE /bookstores/:id
 GET /bookstores/:id/books
 
 ## Books
 
-GET /books
+GET/POST(title, author, summary) /books
 GET/DELETE /books/:id
 GET /books/:id/bookstores
