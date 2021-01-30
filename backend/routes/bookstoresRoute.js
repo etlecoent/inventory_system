@@ -70,11 +70,7 @@ module.exports = ({
 
     getBooksForBookstoreById(bookstore_id)
       .then((result) => {
-        if (result.length) {
-          res.json(result);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        res.json(result);
       })
       .catch((err) => next(err));
   });
