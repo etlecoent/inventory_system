@@ -4,14 +4,12 @@ const { ErrorHandler } = require("../helpers/errorsHelper");
 
 module.exports = ({
   getBookstores,
+  createBookstore,
   getBookstoreById,
-  addBookToBookstoreById,
-  getBookByIdForBookstoreById,
-  updateStoredBookByIdForBookstoreById,
-  deleteStoredBookByIdForBookstoreById,
+  deleteBookstoreById,
   getBooksForBookstoreById,
 }) => {
-  router.get("/", (req, res) => {
+  router.get("/", (req, res, next) => {
     getBookstores()
       .then((bookstores) => {
         if (bookstores.length) {
@@ -20,106 +18,65 @@ module.exports = ({
           throw new ErrorHandler(404, "Not found");
         }
       })
-      .catch((err) => {
-        throw err;
-      });
+      .catch((err) => next(err));
   });
 
-  router.get("/:bookstore_id", (req, res) => {
-    const { bookstore_id } = req.params;
-    getBookstoreById(bookstore_id)
-      .then((bookstore) => {
-        if (bookstore.length) {
-          res.json(bookstore[0]);
-        } else {
-          throw new ErrorHandler(
-            400,
-            `Bookstore with id ${bookstore_id} doesn't exist`
-          );
-        }
-      })
-      .catch((err) => {
-        throw err;
-      });
-  });
+  router.post("/", (req, res, next) => {
+    const { name } = req.body;
 
-  router.get("/:bookstore_id/books", (req, res) => {
-    const { bookstore_id } = req.params;
-
-    getBooksForBookstoreById(bookstore_id)
-      .then((books) => {
-        res.json(books);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  });
-
-  router.post("/:bookstore_id/books/", (req, res) => {
-    const { bookstore_id } = req.params;
-    const { book_id, quantity } = req.body;
-
-    if (!book_id || !quantity) {
-      throw new ErrorHandler(400, "Missing field");
+    if (!name) {
+      next(new ErrorHandler(400, "Missing field(s)"));
     } else {
-      addBookToBookstoreById(book_id, bookstore_id, quantity)
-        .then((book) => {
-          if (book.length) {
-            res.json(book[0]);
+      createBookstore(name)
+        .then((result) => {
+          if (result.length) {
+            res.status(201).json(result[0]);
           } else {
-            throw new ErrorHandler(400, "Missing field");
+            throw new ErrorHandler(403, "Already existing resource");
           }
         })
-        .catch((err) => {
-          throw err;
-        });
+        .catch((err) => next(err));
     }
   });
 
-  router.get("/:bookstore_id/books/:book_id", (req, res) => {
-    const { bookstore_id, book_id } = req.params;
-    getBookByIdForBookstoreById(book_id, bookstore_id)
-      .then((book) => {
-        if (book.length) {
-          res.json(book[0]);
+  router.get("/:bookstore_id", (req, res, next) => {
+    const { bookstore_id } = req.params;
+    getBookstoreById(bookstore_id)
+      .then((result) => {
+        if (result.length) {
+          res.json(result[0]);
         } else {
-          res.status(404).json({ message: "Not found" });
+          throw new ErrorHandler(404, "Not found");
         }
       })
-      .catch((err) => {
-        throw err;
-      });
+      .catch((err) => next(err));
   });
 
-  router.put("/:bookstore_id/books/:book_id", (req, res) => {
-    const { book_id, bookstore_id } = req.params;
-    const { quantity } = req.body;
-    updateStoredBookByIdForBookstoreById(book_id, bookstore_id, quantity)
-      .then((updatedStoredBook) => {
-        if (updatedStoredBook.length) {
-          res.json(updatedStoredBook[0]);
+  router.delete("/:bookstore_id", (req, res, next) => {
+    const { bookstore_id } = req.params;
+    deleteBookstoreById(bookstore_id)
+      .then((result) => {
+        if (result.length) {
+          res.status(202).json(result[0]);
         } else {
-          res.status(501).json({ message: "Not found" });
+          throw new ErrorHandler(404, "Not found");
         }
       })
-      .catch((err) => {
-        throw err;
-      });
+      .catch((err) => next(err));
   });
 
-  router.delete("/:bookstore_id/books/:book_id", (req, res) => {
-    const { book_id, bookstore_id } = req.params;
-    deleteStoredBookByIdForBookstoreById(book_id, bookstore_id)
-      .then((updatedStoredBook) => {
-        if (updatedStoredBook.length) {
-          res.json(updatedStoredBook[0]);
+  router.get("/:bookstore_id/books", (req, res, next) => {
+    const { bookstore_id } = req.params;
+
+    getBooksForBookstoreById(bookstore_id)
+      .then((result) => {
+        if (result.length) {
+          res.json(result);
         } else {
-          res.status(501).json({ message: "Not found" });
+          throw new ErrorHandler(404, "Not found");
         }
       })
-      .catch((err) => {
-        throw err;
-      });
+      .catch((err) => next(err));
   });
 
   return router;
