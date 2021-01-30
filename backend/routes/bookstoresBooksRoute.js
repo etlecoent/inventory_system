@@ -2,17 +2,13 @@ const express = require("express");
 const router = express.Router();
 const { ErrorHandler } = require("../helpers/errorsHelper");
 
-module.exports = ({
-  getBookstores,
-  getBookstoreById,
-  addBookToBookstoreById,
-  getBookByIdForBookstoreById,
-  updateStoredBookByIdForBookstoreById,
-  deleteStoredBookByIdForBookstoreById,
-  getBooksForBookstoreById,
-}) => {
+module.exports = ({ getBookstoresBooks }) => {
   router.get("/", (req, res, next) => {
-    res.send("bookstores-books");
+    getBookstoresBooks()
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => next(err));
   });
 
   return router;
