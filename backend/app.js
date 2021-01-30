@@ -18,27 +18,34 @@ const db = require("knex")(knexfile[process.env.NODE_ENV]);
 // Helpers
 const errorsHelper = require("./helpers/errorsHelper");
 
+//Middlewars
+const { authMiddleware } = require("./middlewares/authMiddleware");
+
 // Routes setup
 const indexRouter = require("./routes/indexRoute");
-app.use("/", indexRouter);
+app.use("/", authMiddleware, indexRouter);
 
 const usersRouter = require("./routes/usersRoute");
 const usersController = require("./controllers/usersController")(db);
-app.use("/users", usersRouter(usersController));
+app.use("/users", authMiddleware, usersRouter(usersController));
 
 const bookstoresRouter = require("./routes/bookstoresRoute");
 const bookstoresController = require("./controllers/bookstoresController")(db);
-app.use("/bookstores", bookstoresRouter(bookstoresController));
+app.use("/bookstores", authMiddleware, bookstoresRouter(bookstoresController));
 
 const booksRouter = require("./routes/booksRoute");
 const booksController = require("./controllers/booksController")(db);
-app.use("/books", booksRouter(booksController));
+app.use("/books", authMiddleware, booksRouter(booksController));
 
 const bookstoresBooksRouter = require("./routes/bookstoresBooksRoute");
 const bookstoresBooksController = require("./controllers/bookstoresBooksController")(
   db
 );
-app.use("/bookstores-books", bookstoresBooksRouter(bookstoresBooksController));
+app.use(
+  "/bookstores-books",
+  authMiddleware,
+  bookstoresBooksRouter(bookstoresBooksController)
+);
 
 // Error middleware
 app.use((err, req, res, next) => {
