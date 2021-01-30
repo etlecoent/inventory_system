@@ -7,6 +7,15 @@ module.exports = (db) => {
       .then((result) => result);
   };
 
+  getBookstoresBooksById = (id) => {
+    return db
+      .select("*")
+      .from("bookstores_books")
+      .where({ id })
+      .orderBy("id")
+      .then((result) => result);
+  };
+
   const updateBookstoresBooks = (book_id, bookstore_id, quantity) => {
     return db("bookstores_books")
       .where({ book_id, bookstore_id })
@@ -18,5 +27,6 @@ module.exports = (db) => {
   return {
     getBookstoresBooks,
     updateBookstoresBooks,
+    getBookstoresBooksById,
   };
 };
