@@ -6,17 +6,16 @@ exports.up = function (knex) {
     table.integer("quantity").defaultTo(0);
     table.timestamp("created_at").defaultTo(knex.fn.now());
     table.timestamp("updated_at").defaultTo(knex.fn.now());
-
-    table
-      .foreign("book_id")
-      .references("id")
-      .inTable("books")
-      .onUpdate("CASCADE")
-      .onDelete("CASCADE");
     table
       .foreign("bookstore_id")
       .references("id")
       .inTable("bookstores")
+      .onUpdate("CASCADE")
+      .onDelete("CASCADE");
+    table
+      .foreign("book_id")
+      .references("id")
+      .inTable("books")
       .onUpdate("CASCADE")
       .onDelete("CASCADE");
     table.unique(["book_id", "bookstore_id"]);
