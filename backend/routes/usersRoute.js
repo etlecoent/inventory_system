@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { ErrorHandler } = require("../helpers/errorsHelper");
 
-module.exports = ({ getUsers, getUser }) => {
+module.exports = ({ getUsers, getUserById }) => {
   router.get("/", (req, res, next) => {
     getUsers()
       .then((users) => {
@@ -17,7 +17,7 @@ module.exports = ({ getUsers, getUser }) => {
 
   router.get("/:id", (req, res, next) => {
     const { id } = req.params;
-    getUser(id)
+    getUserById(id)
       .then((result) => {
         if (result.length) {
           res.json(result[0]);
