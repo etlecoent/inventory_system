@@ -4,6 +4,7 @@ const { ErrorHandler } = require("../helpers/errorsHelper");
 
 module.exports = ({
   getBookstoresBooks,
+  createBookstoresBooks,
   getBookstoresBooksById,
   updateBookstoresBooks,
   deleteBookstoresBooksById,
@@ -14,6 +15,23 @@ module.exports = ({
         res.json(result);
       })
       .catch((err) => next(err));
+  });
+
+  router.post("/", (req, res, next) => {
+    const { book_id, bookstore_id, quantity } = req.body;
+    if (!book_id || !bookstore_id || !quantity) {
+      next(new ErrorHandler(400, "Missing field(s)"));
+    } else {
+      createBookstoresBooks(book_id, bookstore_id, quantity)
+        .then((result) => {
+          if (result.length) {
+            res.status(201).json(result[0]);
+          } else {
+            throw new ErrorHandler(403, "Already existing resource");
+          }
+        })
+        .catch((err) => next(err));
+    }
   });
 
   router.get("/:id", (req, res, next) => {
@@ -29,13 +47,14 @@ module.exports = ({
       .catch((err) => next(err));
   });
 
-  router.put("/", (req, res, next) => {
-    const { book_id, bookstore_id, quantity } = req.body;
+  router.patch("/:id", (req, res, next) => {
+    const { id } = req.params;
+    const { quantity } = req.body;
 
-    if (!book_id || !bookstore_id || !quantity) {
+    if (!quantity) {
       next(new ErrorHandler(400, "Missing field(s)"));
     } else {
-      updateBookstoresBooks(book_id, bookstore_id, quantity)
+      updateBookstoresBooks(id, quantity)
         .then((result) => {
           if (result.length) {
             res.json(result[0]);
@@ -52,7 +71,7 @@ module.exports = ({
     deleteBookstoresBooksById(id)
       .then((result) => {
         if (result.length) {
-          res.json(result[0]);
+          res.status(202).json(result[0]);
         } else {
           throw new ErrorHandler(404, "Not found");
         }

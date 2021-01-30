@@ -7,6 +7,17 @@ module.exports = (db) => {
       .then((result) => result);
   };
 
+  const createBookstoresBooks = (book_id, bookstore_id, quantity) => {
+    return db("bookstores_books")
+      .insert({
+        book_id,
+        bookstore_id,
+        quantity,
+      })
+      .returning("*")
+      .then((result) => result);
+  };
+
   const getBookstoresBooksById = (id) => {
     return db
       .select("*")
@@ -16,9 +27,9 @@ module.exports = (db) => {
       .then((result) => result);
   };
 
-  const updateBookstoresBooks = (book_id, bookstore_id, quantity) => {
+  const updateBookstoresBooks = (id, quantity) => {
     return db("bookstores_books")
-      .where({ book_id, bookstore_id })
+      .where({ id })
       .update({ quantity, updated_at: new Date().toISOString() })
       .returning("*")
       .then((result) => result);
@@ -34,6 +45,7 @@ module.exports = (db) => {
 
   return {
     getBookstoresBooks,
+    createBookstoresBooks,
     getBookstoresBooksById,
     updateBookstoresBooks,
     deleteBookstoresBooksById,
