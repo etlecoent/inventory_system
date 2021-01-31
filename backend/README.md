@@ -31,3 +31,7 @@ GET /bookstores/:id/books
 GET/POST(title, author, summary) /books
 GET/DELETE /books/:id
 GET /books/:id/bookstores
+
+## Users
+
+POST /login
