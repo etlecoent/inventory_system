@@ -1,5 +1,5 @@
 require("dotenv").config({ path: "../.env" });
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const { ErrorHandler } = require("../helpers/errorsHelper");
 
 const authMiddleware = (req, res, next) => {
