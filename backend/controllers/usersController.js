@@ -21,7 +21,6 @@ module.exports = (db) => {
       .select("*")
       .from("users")
       .where({ email })
-      .orderBy("id")
       .then((result) => result);
   };
 

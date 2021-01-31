@@ -23,10 +23,10 @@ const { authMiddleware } = require("./middlewares/authMiddleware");
 
 // Routes setup
 const indexRouter = require("./routes/indexRoute");
-app.use("/", authMiddleware, indexRouter);
+const usersController = require("./controllers/usersController")(db);
+app.use("/", indexRouter(usersController));
 
 const usersRouter = require("./routes/usersRoute");
-const usersController = require("./controllers/usersController")(db);
 app.use("/users", authMiddleware, usersRouter(usersController));
 
 const bookstoresRouter = require("./routes/bookstoresRoute");
