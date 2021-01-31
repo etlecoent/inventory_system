@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const regex = require("../helpers/regex");
 const { ErrorHandler } = require("../helpers/errorsHelper");
 
 module.exports = ({
@@ -34,7 +35,7 @@ module.exports = ({
     }
   });
 
-  router.get("/:id", (req, res, next) => {
+  router.get(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
     getBookstoresBooksById(id)
       .then((result) => {
@@ -47,7 +48,7 @@ module.exports = ({
       .catch((err) => next(err));
   });
 
-  router.patch("/:id", (req, res, next) => {
+  router.patch(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
     const { quantity } = req.body;
 
@@ -66,7 +67,7 @@ module.exports = ({
     }
   });
 
-  router.delete("/:id", (req, res, next) => {
+  router.delete(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
     deleteBookstoresBooksById(id)
       .then((result) => {

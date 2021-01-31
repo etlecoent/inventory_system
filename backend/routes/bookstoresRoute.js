@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const regex = require("../helpers/regex");
 const { ErrorHandler } = require("../helpers/errorsHelper");
 
 module.exports = ({
@@ -39,9 +40,9 @@ module.exports = ({
     }
   });
 
-  router.get("/:bookstore_id", (req, res, next) => {
-    const { bookstore_id } = req.params;
-    getBookstoreById(bookstore_id)
+  router.get(`/:id(${regex.id})`, (req, res, next) => {
+    const { id } = req.params;
+    getBookstoreById(id)
       .then((result) => {
         if (result.length) {
           res.json(result[0]);
@@ -52,9 +53,9 @@ module.exports = ({
       .catch((err) => next(err));
   });
 
-  router.delete("/:bookstore_id", (req, res, next) => {
-    const { bookstore_id } = req.params;
-    deleteBookstoreById(bookstore_id)
+  router.delete(`/:id(${regex.id})`, (req, res, next) => {
+    const { id } = req.params;
+    deleteBookstoreById(id)
       .then((result) => {
         if (result.length) {
           res.status(202).json(result[0]);
@@ -65,10 +66,10 @@ module.exports = ({
       .catch((err) => next(err));
   });
 
-  router.get("/:bookstore_id/books", (req, res, next) => {
-    const { bookstore_id } = req.params;
+  router.get(`/:id(${regex.id})/books`, (req, res, next) => {
+    const { id } = req.params;
 
-    getBooksForBookstoreById(bookstore_id)
+    getBooksForBookstoreById(id)
       .then((result) => {
         if (result.length) {
           res.json(result);

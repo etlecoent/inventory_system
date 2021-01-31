@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const regex = require("../helpers/regex");
 const { ErrorHandler } = require("../helpers/errorsHelper");
 
 module.exports = ({ getUsers, getUserById }) => {
@@ -15,7 +16,7 @@ module.exports = ({ getUsers, getUserById }) => {
       .catch((err) => next(err));
   });
 
-  router.get("/:id", (req, res, next) => {
+  router.get(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
     getUserById(id)
       .then((result) => {
