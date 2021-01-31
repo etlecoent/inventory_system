@@ -40,7 +40,7 @@ Paste & fill this:
 ## `/`
 
 - GET
-- `login`POST(email, password)
+- `login` POST(email, password)
 
 ## `/users`
 
