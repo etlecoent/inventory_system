@@ -20,6 +20,7 @@ const errorsHelper = require("./helpers/errorsHelper");
 
 //Middlewars
 const { authMiddleware } = require("./middlewares/authMiddleware");
+const { errorMiddleware } = require("./middlewares/errorMiddleware");
 
 // Routes setup
 const indexRouter = require("./routes/indexRoute");
@@ -47,18 +48,11 @@ app.use(
   bookstoresBooksRouter(bookstoresBooksController)
 );
 
-// Error middleware
-app.use((err, req, res, next) => {
-  const { statusCode, message } = err;
-  console.log("Error status: ", statusCode);
-  console.log("Message: ", message);
+const Router404 = require("./routes/404Route");
+app.use("*", Router404);
 
-  res.status(statusCode || 500);
-  res.json({
-    statusCode,
-    message,
-  });
-});
+// Error middleware
+app.use(errorMiddleware);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
