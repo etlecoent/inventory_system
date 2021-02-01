@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const regex = require("../helpers/regex");
 const { ErrorHandler } = require("../helpers/errorsHelper");
+const { get } = require("./404Route");
 
 module.exports = ({
   getBooks,
@@ -51,14 +52,17 @@ module.exports = ({
 
   router.delete(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
-    deleteBookById(id)
+    getBookById(id)
       .then((result) => {
-        if (result.length) {
-          res.status(202).json(result[0]);
+        if (!result.length) {
+          throw new ErrorHandler(404, "Not Found");
         } else {
-          throw new ErrorHandler(404, "Not found");
+          deleteBookById(id).then((result) => {
+            res.status(202).json(result[0]);
+          });
         }
       })
+
       .catch((err) => next(err));
   });
 
