@@ -26,6 +26,14 @@ module.exports = (db) => {
       .then((result) => result);
   };
 
+  getBookByContent = (title, author) => {
+    return db
+      .select("*")
+      .from("books")
+      .where({ title, author })
+      .then((result) => result);
+  };
+
   const deleteBookById = (id) => {
     return db("books")
       .where({ id })
@@ -52,6 +60,7 @@ module.exports = (db) => {
     getBooks,
     createBook,
     getBookById,
+    getBookByContent,
     deleteBookById,
     getBookstoresForBookById,
   };
