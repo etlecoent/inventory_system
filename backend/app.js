@@ -48,6 +48,10 @@ app.use(
   bookstoresBooksRouter(bookstoresBooksController)
 );
 
+const statusRouter = require("./routes/statusRoute");
+const statusController = require("./controllers/statusController")(db);
+app.use("/status", authMiddleware, statusRouter(statusController));
+
 const Router404 = require("./routes/404Route");
 app.use("*", Router404);
 
