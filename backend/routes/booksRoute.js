@@ -55,14 +55,13 @@ module.exports = ({
     getBookById(id)
       .then((result) => {
         if (!result.length) {
-          throw new ErrorHandler(404, "Not Found");
+          throw new ErrorHandler(404, "Not found");
         } else {
           deleteBookById(id).then((result) => {
             res.status(202).json(result[0]);
           });
         }
       })
-
       .catch((err) => next(err));
   });
 
