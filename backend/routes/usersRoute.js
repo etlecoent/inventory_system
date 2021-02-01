@@ -16,11 +16,8 @@ module.exports = ({ getUsers, getUserById }) => {
     const { id } = req.params;
     getUserById(id)
       .then((result) => {
-        if (result.length) {
-          res.json(result[0]);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        res.json(result[0]);
       })
       .catch((err) => next(err));
   });
