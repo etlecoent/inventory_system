@@ -7,11 +7,7 @@ module.exports = ({ getUsers, getUserById }) => {
   router.get("/", (req, res, next) => {
     getUsers()
       .then((users) => {
-        if (users.length) {
-          res.json(users);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        res.json(users);
       })
       .catch((err) => next(err));
   });

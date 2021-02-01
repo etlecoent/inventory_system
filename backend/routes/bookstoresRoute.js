@@ -13,11 +13,7 @@ module.exports = ({
   router.get("/", (req, res, next) => {
     getBookstores()
       .then((bookstores) => {
-        if (bookstores.length) {
-          res.json(bookstores);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        res.json(bookstores);
       })
       .catch((err) => next(err));
   });
@@ -71,11 +67,7 @@ module.exports = ({
 
     getBooksForBookstoreById(id)
       .then((result) => {
-        if (result.length) {
-          res.json(result);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        res.json(result);
       })
       .catch((err) => next(err));
   });
