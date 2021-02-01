@@ -7,6 +7,7 @@ module.exports = ({
   getBookstoresBooks,
   createBookstoresBooks,
   getBookstoresBooksById,
+  getBookstoresBooksByContent,
   updateBookstoresBooks,
   deleteBookstoresBooksById,
 }) => {
@@ -20,30 +21,27 @@ module.exports = ({
 
   router.post("/", (req, res, next) => {
     const { book_id, bookstore_id, quantity } = req.body;
-    if (!book_id || !bookstore_id || !quantity) {
+    if (!book_id || !bookstore_id || !quantity)
       next(new ErrorHandler(400, "Missing field(s)"));
-    } else {
-      createBookstoresBooks(book_id, bookstore_id, quantity)
-        .then((result) => {
-          if (result.length) {
+    getBookstoresBooksByContent(book_id, bookstore_id)
+      .then((result) => {
+        if (result.length)
+          throw new ErrorHandler(403, "Already existing resource");
+        createBookstoresBooks(book_id, bookstore_id, quantity).then(
+          (result) => {
             res.status(201).json(result[0]);
-          } else {
-            throw new ErrorHandler(403, "Already existing resource");
           }
-        })
-        .catch((err) => next(err));
-    }
+        );
+      })
+      .catch((err) => next(err));
   });
 
   router.get(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
     getBookstoresBooksById(id)
       .then((result) => {
-        if (result.length) {
-          res.json(result[0]);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        res.json(result[0]);
       })
       .catch((err) => next(err));
   });
@@ -52,38 +50,25 @@ module.exports = ({
     const { id } = req.params;
     const { quantity } = req.body;
 
-    if (!quantity) {
-      next(new ErrorHandler(400, "Missing field(s)"));
-    } else {
-      getBookstoresBooksById(id)
-        .then((result) => {
-          if (!result.length) {
-            throw new ErrorHandler(404, "Not found");
-          } else {
-            updateBookstoresBooks(id, quantity).then((result) => {
-              if (result.length) {
-                res.json(result[0]);
-              } else {
-                throw new ErrorHandler(404, "Not found");
-              }
-            });
-          }
-        })
-        .catch((err) => next(err));
-    }
+    if (!quantity) next(new ErrorHandler(400, "Missing field(s)"));
+    getBookstoresBooksById(id)
+      .then((result) => {
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        updateBookstoresBooks(id, quantity).then((result) => {
+          res.json(result[0]);
+        });
+      })
+      .catch((err) => next(err));
   });
 
   router.delete(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
     getBookstoresBooksById(id)
       .then((result) => {
-        if (!result.length) {
-          throw new ErrorHandler(404, "Not found");
-        } else {
-          deleteBookstoresBooksById(id).then((result) => {
-            res.status(202).json(result[0]);
-          });
-        }
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        deleteBookstoresBooksById(id).then((result) => {
+          res.status(202).json(result[0]);
+        });
       })
       .catch((err) => next(err));
   });
