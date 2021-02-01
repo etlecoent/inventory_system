@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { DataGrid, CellParams } from "@material-ui/data-grid";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 import useAxios from "../hooks/useAxios";
 import { makeStyles } from "@material-ui/core/styles";
@@ -49,34 +48,20 @@ export default function BooksList(props) {
   }, [bookstoreId]);
 
   return (
-    <>
-      {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "85vh",
-            width: "100%",
-          }}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            justifyItems: "center",
-            height: "85vh",
-            width: "100%",
-          }}>
-          <DataGrid
-            rows={books}
-            columns={columns}
-            pageSize={10}
-            className={classes["root"]}
-          />
-        </div>
-      )}
-    </>
+    <div
+      style={{
+        display: "flex",
+        justifyItems: "center",
+        height: "85vh",
+        width: "100%",
+      }}>
+      <DataGrid
+        rows={books}
+        columns={columns}
+        pageSize={10}
+        className={classes["root"]}
+        loading={isLoading}
+      />
+    </div>
   );
 }
