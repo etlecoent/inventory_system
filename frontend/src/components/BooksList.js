@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DataGrid, CellParams } from "@material-ui/data-grid";
+import { DataGrid } from "@material-ui/data-grid";
 import clsx from "clsx";
 import useAxios from "../hooks/useAxios";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,12 +14,13 @@ const useStyles = makeStyles({
 });
 
 const columns = [
-  { field: "book_id", headerName: "ID", width: 100 },
+  { field: "id", headerName: "Stock_id", width: 120 },
+  { field: "book_id", headerName: "Book_id", width: 120 },
   {
     field: "quantity",
     headerName: "Quantity",
     width: 120,
-    cellClassName: (params: CellParams) =>
+    cellClassName: (params) =>
       clsx("cell", {
         negative: params.value <= 0,
       }),

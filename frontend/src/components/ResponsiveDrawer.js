@@ -1,19 +1,18 @@
 import { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Divider from "@material-ui/core/Divider";
+
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
-import BooksList from "../components/BooksList";
+import BooksList from "./BooksList";
+import BookstoresList from "./BookstoresList";
 
 const drawerWidth = 240;
 
@@ -61,24 +60,6 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        {bookstores.map((bookstore, index) => (
-          <ListItem
-            button
-            selected={bookstore.id === bookstoreId}
-            key={bookstore.id}
-            onClick={() => setBookstoreId(bookstore.id)}>
-            <ListItemText primary={bookstore.name} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
@@ -115,7 +96,12 @@ function ResponsiveDrawer(props) {
             ModalProps={{
               keepMounted: true, // Better open performance on mobile.
             }}>
-            {drawer}
+            <BookstoresList
+              handleClick={setBookstoreId}
+              bookstores={bookstores}
+              classes={classes}
+              bookstoreId={bookstoreId}
+            />
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -125,7 +111,12 @@ function ResponsiveDrawer(props) {
             }}
             variant="permanent"
             open>
-            {drawer}
+            <BookstoresList
+              handleClick={setBookstoreId}
+              bookstores={bookstores}
+              classes={classes}
+              bookstoreId={bookstoreId}
+            />
           </Drawer>
         </Hidden>
       </nav>
