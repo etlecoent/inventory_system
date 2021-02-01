@@ -24,6 +24,14 @@ module.exports = (db) => {
       .then((result) => result);
   };
 
+  const getBookstoreByContent = (name) => {
+    return db
+      .select("*")
+      .from("bookstores")
+      .where({ name })
+      .then((result) => result);
+  };
+
   const deleteBookstoreById = (id) => {
     return db("bookstores")
       .where({ id })
@@ -46,6 +54,7 @@ module.exports = (db) => {
     getBookstores,
     createBookstore,
     getBookstoreById,
+    getBookstoreByContent,
     deleteBookstoreById,
     getBooksForBookstoreById,
   };

@@ -7,6 +7,7 @@ module.exports = ({
   getBookstores,
   createBookstore,
   getBookstoreById,
+  getBookstoreByContent,
   deleteBookstoreById,
   getBooksForBookstoreById,
 }) => {
@@ -20,54 +21,48 @@ module.exports = ({
 
   router.post("/", (req, res, next) => {
     const { name } = req.body;
-
-    if (!name) {
-      next(new ErrorHandler(400, "Missing field(s)"));
-    } else {
-      createBookstore(name)
-        .then((result) => {
-          if (result.length) {
-            res.status(201).json(result[0]);
-          } else {
-            throw new ErrorHandler(403, "Already existing resource");
-          }
-        })
-        .catch((err) => next(err));
-    }
+    if (!name) next(new ErrorHandler(400, "Missing field(s)"));
+    getBookstoreByContent(name)
+      .then((result) => {
+        if (result.length)
+          throw new ErrorHandler(403, "Already existing resource");
+        createBookstore(name).then((result) => {
+          res.status(201).json(result[0]);
+        });
+      })
+      .catch((err) => next(err));
   });
 
   router.get(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
     getBookstoreById(id)
       .then((result) => {
-        if (result.length) {
-          res.json(result[0]);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        res.json(result[0]);
       })
       .catch((err) => next(err));
   });
 
   router.delete(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
-    deleteBookstoreById(id)
+    getBookstoreById(id)
       .then((result) => {
-        if (result.length) {
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        deleteBookstoreById(id).then((result) => {
           res.status(202).json(result[0]);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        });
       })
       .catch((err) => next(err));
   });
 
   router.get(`/:id(${regex.id})/books`, (req, res, next) => {
     const { id } = req.params;
-
-    getBooksForBookstoreById(id)
+    getBookstoreById(id)
       .then((result) => {
-        res.json(result);
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        getBooksForBookstoreById(id).then((result) => {
+          res.json(result);
+        });
       })
       .catch((err) => next(err));
   });
