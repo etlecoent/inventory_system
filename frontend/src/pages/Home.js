@@ -14,5 +14,5 @@ export default function Home(props) {
     });
   }, []);
 
-  return <ResponsiveDrawer bookstores={bookstores} />;
+  return <ResponsiveDrawer bookstores={bookstores} token={token} />;
 }
