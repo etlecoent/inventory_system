@@ -55,12 +55,18 @@ module.exports = ({
     if (!quantity) {
       next(new ErrorHandler(400, "Missing field(s)"));
     } else {
-      updateBookstoresBooks(id, quantity)
+      getBookstoresBooksById(id)
         .then((result) => {
-          if (result.length) {
-            res.json(result[0]);
-          } else {
+          if (!result.length) {
             throw new ErrorHandler(404, "Not found");
+          } else {
+            updateBookstoresBooks(id, quantity).then((result) => {
+              if (result.length) {
+                res.json(result[0]);
+              } else {
+                throw new ErrorHandler(404, "Not found");
+              }
+            });
           }
         })
         .catch((err) => next(err));
@@ -69,12 +75,14 @@ module.exports = ({
 
   router.delete(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
-    deleteBookstoresBooksById(id)
+    getBookstoresBooksById(id)
       .then((result) => {
-        if (result.length) {
-          res.status(202).json(result[0]);
-        } else {
+        if (!result.length) {
           throw new ErrorHandler(404, "Not found");
+        } else {
+          deleteBookstoresBooksById(id).then((result) => {
+            res.status(202).json(result[0]);
+          });
         }
       })
       .catch((err) => next(err));
