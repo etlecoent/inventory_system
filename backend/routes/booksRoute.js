@@ -8,6 +8,7 @@ module.exports = ({
   getBooks,
   createBook,
   getBookById,
+  getBookByContent,
   deleteBookById,
   getBookstoresForBookById,
 }) => {
@@ -21,31 +22,25 @@ module.exports = ({
 
   router.post("/", (req, res, next) => {
     const { title, author, summary } = req.body;
-
-    if (!title || !author || !summary) {
+    if (!title || !author || !summary)
       next(new ErrorHandler(400, "Missing field(s)"));
-    } else {
-      createBook(title, author, summary)
-        .then((result) => {
-          if (result.length) {
-            res.status(201).json(result[0]);
-          } else {
-            throw new ErrorHandler(403, "Already existing resource");
-          }
-        })
-        .catch((err) => next(err));
-    }
+    getBookByContent(title, author)
+      .then((result) => {
+        if (result.length)
+          throw new ErrorHandler(403, "Already existing resource");
+        createBook(title, author, summary).then((result) => {
+          res.status(201).json(result[0]);
+        });
+      })
+      .catch((err) => next(err));
   });
 
   router.get(`/:id(${regex.id})`, (req, res, next) => {
     const { id } = req.params;
     getBookById(id)
       .then((result) => {
-        if (result.length) {
-          res.json(result[0]);
-        } else {
-          throw new ErrorHandler(404, "Not found");
-        }
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        res.json(result[0]);
       })
       .catch((err) => next(err));
   });
@@ -54,22 +49,22 @@ module.exports = ({
     const { id } = req.params;
     getBookById(id)
       .then((result) => {
-        if (!result.length) {
-          throw new ErrorHandler(404, "Not found");
-        } else {
-          deleteBookById(id).then((result) => {
-            res.status(202).json(result[0]);
-          });
-        }
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        deleteBookById(id).then((result) => {
+          res.status(202).json(result[0]);
+        });
       })
       .catch((err) => next(err));
   });
 
   router.get(`/:id(${regex.id})/bookstores`, (req, res, next) => {
     const { id } = req.params;
-    getBookstoresForBookById(id)
+    getBookById(id)
       .then((result) => {
-        res.json(result);
+        if (!result.length) throw new ErrorHandler(404, "Not found");
+        getBookstoresForBookById(id).then((result) => {
+          res.json(result);
+        });
       })
       .catch((err) => next(err));
   });
