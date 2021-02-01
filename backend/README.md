@@ -63,3 +63,8 @@ Paste & fill this:
 - GET & POST(title, author, summary)
 - `/:id` GET & DELETE
 - `/:id/bookstores` GET
+
+## `/status`
+
+- GET & POST(title, author, summary)
+- `/bookstores-books` GET
