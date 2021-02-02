@@ -33,28 +33,41 @@ export default function AlertModal(props) {
       <div className={classes.modalContent}>
         <List
           subheader={
-            <ListSubheader color="primary" id="out-of-stock-subheader">
-              <Typography component="h3">Out Of Stock</Typography>
+            <ListSubheader
+              color="primary"
+              id="out-of-stock-subheader"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}>
+              <Typography variant="h3">Out Of Stock</Typography>
             </ListSubheader>
           }>
           {emptyStocks.map((emptyStock) => (
-            <ListItem key={emptyStock.id} divider={true}>
-              <ListItemText
-                primary={
-                  <Typography component="h5">
-                    {`${emptyStock.bookstore_id} - ${emptyStock.bookstore_name}`}
-                  </Typography>
-                }
-                secondary={
-                  <>
-                    <Typography component="h6">
-                      {`${emptyStock.book_id} - ${emptyStock.book_title}`}
-                    </Typography>
-                    <span>{`By ${emptyStock.book_author}`}</span>
-                  </>
-                }
-              />
-              <List></List>
+            <ListItem
+              key={emptyStock.id}
+              divider={true}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}>
+              {/* <ListItemText */}
+              {/* primary={ */}
+              <Typography variant="h5">
+                {`${emptyStock.bookstore_id} - ${emptyStock.bookstore_name}`}
+              </Typography>
+              {/* } */}
+              {/* secondary={ */}
+              {/* <div> */}
+              <Typography variant="subtitle1">
+                {`${emptyStock.book_id} - ${emptyStock.book_title}`}
+              </Typography>
+              <span>{`By ${emptyStock.book_author}`}</span>
+              {/* </div> */}
+              {/* } */}
+              {/* /> */}
             </ListItem>
           ))}
         </List>
