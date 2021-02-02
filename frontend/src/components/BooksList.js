@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import clsx from "clsx";
-import useAxios from "../hooks/useAxios";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -31,22 +29,8 @@ const columns = [
 ];
 
 export default function BooksList(props) {
-  const { bookstoreId, token } = props;
+  const { data, isLoading } = props;
   const classes = useStyles();
-  const axios = useAxios(token);
-  const [books, setBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(`bookstores/${bookstoreId}/books`)
-      .then((res) => {
-        setIsLoading(false);
-        setBooks(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, [bookstoreId]);
 
   return (
     <div
@@ -57,7 +41,7 @@ export default function BooksList(props) {
         width: "100%",
       }}>
       <DataGrid
-        rows={books}
+        rows={data}
         columns={columns}
         pageSize={10}
         className={classes["root"]}

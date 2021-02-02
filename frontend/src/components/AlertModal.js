@@ -34,23 +34,23 @@ export default function AlertModal(props) {
         <List
           subheader={
             <ListSubheader color="primary" id="out-of-stock-subheader">
-              <Typography variant="h3">Out Of Stock</Typography>
+              <Typography component="h3">Out Of Stock</Typography>
             </ListSubheader>
           }>
           {emptyStocks.map((emptyStock) => (
             <ListItem key={emptyStock.id} divider={true}>
               <ListItemText
                 primary={
-                  <Typography variant="h5">
-                    {emptyStock.bookstore_name}
+                  <Typography component="h5">
+                    {`${emptyStock.bookstore_id} - ${emptyStock.bookstore_name}`}
                   </Typography>
                 }
                 secondary={
                   <>
-                    <Typography variant="h6">
-                      {emptyStock.book_author}
+                    <Typography component="h6">
+                      {`${emptyStock.book_id} - ${emptyStock.book_title}`}
                     </Typography>
-                    <span>{emptyStock.book_title}</span>
+                    <span>{`By ${emptyStock.book_author}`}</span>
                   </>
                 }
               />

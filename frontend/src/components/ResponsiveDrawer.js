@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useAxios from "../hooks/useAxios";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -50,11 +51,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ResponsiveDrawer(props) {
-  const { window, bookstores, token } = props;
+  const { window, bookstores, token, reload } = props;
   const [bookstoreId, setBookstoreId] = useState(null);
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const axios = useAxios(token);
+  const [books, setBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -62,6 +66,19 @@ function ResponsiveDrawer(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  useEffect(() => {
+    if (bookstoreId) {
+      setIsLoading(true);
+      axios
+        .get(`bookstores/${bookstoreId}/books`)
+        .then((res) => {
+          setIsLoading(false);
+          setBooks(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [bookstoreId, reload]);
 
   return (
     <div className={classes.root}>
@@ -122,7 +139,7 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {bookstoreId && <BooksList token={token} bookstoreId={bookstoreId} />}
+        {<BooksList isLoading={isLoading} data={books} />}
       </main>
     </div>
   );

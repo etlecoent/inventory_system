@@ -29,7 +29,7 @@ export default function Home(props) {
 
   return (
     <>
-      <ResponsiveDrawer bookstores={bookstores} token={token} />
+      <ResponsiveDrawer reload={isOpen} bookstores={bookstores} token={token} />
       <AlertModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
