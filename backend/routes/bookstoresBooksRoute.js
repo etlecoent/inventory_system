@@ -25,11 +25,8 @@ module.exports = (
 
   router.post("/", (req, res, next) => {
     const { book_id, bookstore_id, quantity } = req.body;
-    if (
-      !Number.isInteger(book_id) ||
-      !Number.isInteger(bookstore_id) ||
-      !Number.isInteger(quantity)
-    ) {
+    console.log(typeof quantity);
+    if (!book_id || !bookstore_id || !quantity || Number(quantity) < 0) {
       next(new ErrorHandler(400, "Invalid field(s)"));
     } else {
       const validations = [
@@ -39,10 +36,10 @@ module.exports = (
       ];
       Promise.all(validations)
         .then((result) => {
-          if (result[0].length)
-            throw new ErrorHandler(403, "Already existing resource");
-          if (!result[1].length || !result[2].length)
+          if (!result[0].length || !result[1].length)
             throw new ErrorHandler(400, "Invalid book_id and/or bookstore_id");
+          if (result[2].length)
+            throw new ErrorHandler(403, "Already existing resource");
           createBookstoresBooks(book_id, bookstore_id, quantity).then(
             (result) => {
               res.status(201).json(result[0]);
@@ -67,7 +64,7 @@ module.exports = (
     const { id } = req.params;
     const { quantity } = req.body;
 
-    if (!Number.isInteger(quantity)) {
+    if (!quantity || quantity < 0) {
       next(new ErrorHandler(400, "Invalid field(s)"));
     } else {
       getBookstoresBooksById(id)
