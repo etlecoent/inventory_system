@@ -42,7 +42,11 @@ module.exports = (db) => {
 
   const getBooksForBookstoreById = (id) => {
     return db
-      .select(["books.*", "bookstores_books.quantity"])
+      .select([
+        "books.*",
+        "bookstores_books.id as stock_id",
+        "bookstores_books.quantity",
+      ])
       .from("books")
       .innerJoin("bookstores_books", "books.id", "bookstores_books.book_id")
       .where("bookstore_id", id)
