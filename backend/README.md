@@ -66,5 +66,4 @@ Paste & fill this:
 
 ## `/status`
 
-- GET & POST(title, author, summary)
 - `/bookstores-books` GET
