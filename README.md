@@ -5,10 +5,10 @@ It is used to manage books 'stocks in bookstores.
 
 ## Screenshots:
 
-<p style="display:flex; flex-direction:column; justify-content:center; align-items:center">
-  <img src="../docs/AlertSystem" width="583" height="441">
-  <img src="../docs/LoginPage" width="583" height="441">
-  <img src="../docs/HomePage" width="583" height="441">
+<p align="center">
+  <img src="./docs/AlertSystem" width="583" height="441">
+  <img src="./docs/LoginPage" width="583" height="441">
+  <img src="./docs/HomePage" width="583" height="441">
 </p>
 
 ## Dependencies
