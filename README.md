@@ -6,9 +6,9 @@ It is used to manage books 'stocks in bookstores.
 ## Screenshots:
 
 <p align="center">
-  <img src="./docs/AlertSystem" width="583" height="441">
-  <img src="./docs/LoginPage" width="583" height="441">
-  <img src="./docs/HomePage" width="583" height="441">
+  <img src="https://github.com/Deteri0n/lfgame/blob/master/docs//AlertSystem" width="583" height="441">
+  <img src="https://github.com/Deteri0n/lfgame/blob/master/docs//LoginPage" width="583" height="441">
+  <img src="https://github.com/Deteri0n/lfgame/blob/master/docs//HomePage" width="583" height="441">
 </p>
 
 ## Dependencies
