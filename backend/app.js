@@ -15,9 +15,6 @@ if (process.env.NODE_ENV !== "production") {
 const knexfile = require("./db/knexfile");
 const db = require("knex")(knexfile[process.env.NODE_ENV]);
 
-// Helpers
-const errorsHelper = require("./helpers/errorsHelper");
-
 //Middlewars
 const { authMiddleware } = require("./middlewares/authMiddleware");
 const { errorMiddleware } = require("./middlewares/errorMiddleware");
