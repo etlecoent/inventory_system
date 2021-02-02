@@ -42,7 +42,11 @@ const bookstoresBooksController = require("./controllers/bookstoresBooksControll
 app.use(
   "/bookstores-books",
   authMiddleware,
-  bookstoresBooksRouter(bookstoresBooksController)
+  bookstoresBooksRouter(
+    booksController,
+    bookstoresController,
+    bookstoresBooksController
+  )
 );
 
 const statusRouter = require("./routes/statusRoute");
