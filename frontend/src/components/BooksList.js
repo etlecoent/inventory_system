@@ -14,8 +14,8 @@ const useStyles = makeStyles({
 });
 
 const columns = [
-  { field: "id", headerName: "Stock_id", width: 120 },
-  { field: "book_id", headerName: "Book_id", width: 120 },
+  { field: "stock_id", headerName: "Stock_id", width: 120 },
+  { field: "id", headerName: "Book_id", width: 120 },
   {
     field: "quantity",
     headerName: "Quantity",
