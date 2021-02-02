@@ -21,16 +21,19 @@ module.exports = ({
 
   router.post("/", (req, res, next) => {
     const { name } = req.body;
-    if (!name) next(new ErrorHandler(400, "Missing field(s)"));
-    getBookstoreByContent(name)
-      .then((result) => {
-        if (result.length)
-          throw new ErrorHandler(403, "Already existing resource");
-        createBookstore(name).then((result) => {
-          res.status(201).json(result[0]);
-        });
-      })
-      .catch((err) => next(err));
+    if (!name) {
+      next(new ErrorHandler(400, "Missing field(s)"));
+    } else {
+      getBookstoreByContent(name)
+        .then((result) => {
+          if (result.length)
+            throw new ErrorHandler(403, "Already existing resource");
+          createBookstore(name).then((result) => {
+            res.status(201).json(result[0]);
+          });
+        })
+        .catch((err) => next(err));
+    }
   });
 
   router.get(`/:id(${regex.id})`, (req, res, next) => {

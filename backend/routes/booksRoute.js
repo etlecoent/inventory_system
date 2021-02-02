@@ -22,17 +22,19 @@ module.exports = ({
 
   router.post("/", (req, res, next) => {
     const { title, author, summary } = req.body;
-    if (!title || !author || !summary)
+    if (!title || !author || !summary) {
       next(new ErrorHandler(400, "Missing field(s)"));
-    getBookByContent(title, author)
-      .then((result) => {
-        if (result.length)
-          throw new ErrorHandler(403, "Already existing resource");
-        createBook(title, author, summary).then((result) => {
-          res.status(201).json(result[0]);
-        });
-      })
-      .catch((err) => next(err));
+    } else {
+      getBookByContent(title, author)
+        .then((result) => {
+          if (result.length)
+            throw new ErrorHandler(403, "Already existing resource");
+          createBook(title, author, summary).then((result) => {
+            res.status(201).json(result[0]);
+          });
+        })
+        .catch((err) => next(err));
+    }
   });
 
   router.get(`/:id(${regex.id})`, (req, res, next) => {
