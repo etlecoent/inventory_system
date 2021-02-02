@@ -44,14 +44,14 @@ module.exports = (db) => {
 
   const getBookstoresForBookById = (id) => {
     return db
-      .select("*")
+      .select(["bookstores.*", "bookstores_books.quantity"])
       .from("bookstores")
       .innerJoin(
         "bookstores_books",
         "bookstores.id",
         "bookstores_books.bookstore_id"
       )
-      .where("bookstore_id", id)
+      .where("book_id", id)
       .orderBy("bookstores.id")
       .then((result) => result);
   };
