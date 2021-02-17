@@ -26,7 +26,7 @@ module.exports = (db) => {
       .then((result) => result);
   };
 
-  getBookByContent = (title, author) => {
+  const getBookByContent = (title, author) => {
     return db
       .select("*")
       .from("books")
