@@ -25,7 +25,6 @@ module.exports = (
 
   router.post("/", (req, res, next) => {
     const { book_id, bookstore_id, quantity } = req.body;
-    console.log(typeof quantity);
     if (!book_id || !bookstore_id || !quantity || Number(quantity) < 0) {
       next(new ErrorHandler(400, "Invalid field(s)"));
     } else {
