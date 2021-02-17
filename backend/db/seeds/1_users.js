@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 const createFakeUsers = (n) => {
   const users = [];
   const salt = bcrypt.genSaltSync(13);
+  const hash = bcrypt.hashSync("test", salt);
   for (let i = 0; i < n; i++) {
-    const hash = bcrypt.hashSync("test", salt);
     users.push({
       username: faker.internet.userName(),
       password: hash,
